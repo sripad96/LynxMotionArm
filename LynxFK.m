@@ -20,15 +20,18 @@ disp('and Figure 3 shows the maximum potential workspace of its end effector')
 
 
 %% Links Lengths
-syms l1 l2 l3 l4 l5;
-
-
+% syms l1 l2 l3 l4 l5;
+l1 = 1;
+l2 = 1;
+l3 = 1;
+l4 = 0;
+l5 = 1;
 %% Trigonometric angles
 syms q1 q2 q3 q4 q5;
 
 
 %% distal table
-T_ij = eye(4);
+% T_ij = eye(4);
 
 %% Tip position
 % These equations are derived from the Forward Kinematic model of the 2DOF
@@ -38,23 +41,24 @@ a = [0 l2 l3 0 0]';
 alpha = [90 0 0 -90 0]';
 d = [l1 0 0 0 l5]';
 theta = [q1 q2 q3 q4 q5]';
+T_ij1 = Transformation(a(1), alpha(1), d(1), theta(1));
+T_ij2 = Transformation(a(2), alpha(2), d(2), theta(2));
+T_ij3 = Transformation(a(3), alpha(3), d(3), theta(3));
+T_ij4 = Transformation(a(4), alpha(4), d(4), theta(4));
+T_ij5 = Transformation(a(5), alpha(5), d(5), theta(5));
 
-for i = 1:5
-    T_ij = T_ij * Transformation(a(i), alpha(i), d(i), theta(i));
-end
+% for i = 1:5
+%     T_ij = T_ij * Transformation(a(i), alpha(i), d(i), theta(i))
+% end
 
-T_ij
+T_ij  = T_ij1 * T_ij2 * T_ij3 * T_ij4 * T_ij5;
 
 xt = T_ij(1, 4)
 
 yt = T_ij(2, 4)
 
 zt = T_ij(3, 4)
-l1 = 1;
-l2 = 1;
-l3 = 1;
-l4 = 0;
-l5 = 1;
+
 pt = [ xt yt zt ] ;
 
 % xt =cos(q1)*cos(q2)*l2 - l5*(cos((180*conj(q4))/pi)*(cos((180*conj(q1))/pi)*cos((180*conj(q2))/pi)*sin((180*conj(q3))/pi) + cos((180*conj(q1))/pi)*cos((180*conj(q3))/pi)*sin((180*conj(q2))/pi)) + sin((180*conj(q4))/pi)*(cos((180*conj(q1))/pi)*cos((180*conj(q2))/pi)*cos((180*conj(q3))/pi) - cos((180*conj(q1))/pi)*sin((180*conj(q2))/pi)*sin((180*conj(q3))/pi))) + cos((180*conj(q1))/pi)*cos((180*conj(q2))/pi)*cos((180*conj(q3))/pi)*conj(l3) - cos((180*conj(q1))/pi)*sin((180*conj(q2))/pi)*sin((180*conj(q3))/pi)*conj(l3)
@@ -88,7 +92,7 @@ zwork = zeros(points^2) ;
 QVale = zeros(points^2);
 q5 = 0;
 
-for q1 = -90:stepq1:90	% for q1
+for q1 = -90 :stepq1:90	% for q1
     for q2 = 0:step:180   % for q2
         for q3 = -170:step:0  % for q3
             for q4 = 0:step:180 % for q4
@@ -98,6 +102,8 @@ for q1 = -90:stepq1:90	% for q1
                     QVale(i) =  q2 + q3 + q4;
                     if(xwork(i) < -0.78 & xwork(i) > -0.79)
                           xwork(i)
+                          ywork(i)
+                          zwork(i)
                           QVale(i)
                           q1
                           q2
@@ -115,10 +121,10 @@ end
 % zwork
 % QVale
 
-% plot3(xwork,ywork,zwork, 'rx')
-% hold on
-% title('Workspace') ; xlabel('x (m)') ; ylabel('y (m)') ; zlabel('z (m)') ;
-% axis equal
+plot3(xwork,ywork,zwork, 'rx')
+hold on
+title('Workspace') ; xlabel('x (m)') ; ylabel('y (m)') ; zlabel('z (m)') ;
+axis equal
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -144,37 +150,78 @@ title('Workspace') ; xlabel('x (m)') ; ylabel('y (m)') ; zlabel('z (m)') ;
 %%
 %%Solve the Inverse Kinematics Model
 syms zinv xinv yinv Qinv;
-zPrime = zinv - (l3 * cosd(Qinv));
-rPrime = sqrt(xinv^2 + yinv^2) - (l3 * cosd(Qinv));
-gamma_a = (-1*zPrime) / sqrt(zPrime^2 + rPrime^2);
-gamma_b = rPrime / sqrt(zPrime^2 + rPrime^2);
-gamma = atan2d(gamma_a, gamma_b);
 Theta1 = atan2d(yinv, xinv);
-Theta2_a = gamma + acosd((-1*(rPrime^2 + zPrime^2 + l1^2 - l2^2))/(l1*2*sqrt(rPrime^2 + zPrime^2)));
-Theta2_b = gamma - acosd((-1*(rPrime^2 + zPrime^2 + l1^2 - l2^2))/(l1*2*sqrt(rPrime^2 + zPrime^2)));
 
-Theta3_a = atan2d((zPrime - (l1*sind(Theta2_a)))/l2, (rPrime - (l1*cosd(Theta2_a)))/l2) - Theta2_a;
-Theta3_b = atan2d((zPrime - (l1*sind(Theta2_b)))/l2, (rPrime - (l1*cosd(Theta2_b)))/l2) - Theta2_b;
+phi = Qinv - 90;
+R = l5*cosd(phi);
+xPrime = xinv - (R*cosd(Theta1));
+yPrime = yinv - (R*sind(Theta1));
+zPrime = zinv - (l5 * sind(phi));
 
+rPrime = sqrt(xPrime^2 + yPrime^2);
+N = sqrt((zPrime - l1)^2 + rPrime^2);
+gamma = atan2d((zPrime - l1), rPrime);
+Theta2_a = gamma + acosd((N^2 + l2^2 - l3^2) / (2*l2*N));
+Theta2_b = gamma - acosd( (N^2 + l2^2 - l3^2) / (2*l2*N));
+
+Theta3_a = acosd((N^2 - l2^2 - l3^2)/(2*l2*l3));
+Theta3_b = -1*acosd((N^2 - l2^2 - l3^2)/(2*l2*l3));
 Theta4_a = Qinv - Theta2_a - Theta3_a;
 Theta4_b = Qinv - Theta2_b - Theta3_b;
 
-for i = 1:6
-    zinv = zinvMat(i);
-    yinv = yinvMat(i);
-    xinv = xinvMat(i);
-    Qinv = QinvMat(i);
-    eval(subs(gamma));
-    eval(subs(Theta1))
-    eval(subs(Theta2_a))
-    eval(subs(Theta3_a))
-    eval(subs(Theta4_a))
-end
+% zPrime = zinv - (l5 * sind(Qinv));
+% rPrime = sqrt(xinv^2 + yinv^2) - (l5 * cosd(Qinv));
+% gamma_a = (-1*zPrime) / sqrt(zPrime^2 + rPrime^2);
+% gamma_b = rPrime / sqrt(zPrime^2 + rPrime^2);
+% gamma = atan2d(gamma_a, gamma_b);
+% 
+% Theta2_a = gamma + acosd((-1*(rPrime^2 + zPrime^2 + l2^2 - l3^2))/(l2*2*sqrt(rPrime^2 + zPrime^2)));
+% Theta2_b = gamma - acosd((-1*(rPrime^2 + zPrime^2 + l2^2 - l3^2))/(l2*2*sqrt(rPrime^2 + zPrime^2)));
+% 
+% Theta3_a = atan2d((zPrime - (l2*sind(Theta2_a)))/l3, (rPrime - (l2*cosd(Theta2_a)))/l3) - Theta2_a;
+% Theta3_b = atan2d((zPrime - (l2*sind(Theta2_b)))/l3, (rPrime - (l2*cosd(Theta2_b)))/l3) - Theta2_b;
+% 
+% Theta4_a = Qinv - Theta2_a - Theta3_a;
+% Theta4_b = Qinv - Theta2_b - Theta3_b;
 
-q1 = 180;
-q2 = 117.8254;
-q3 = -109.1271;
-q4 = 121.3018;
+    i = 2;
+%     zinv = zinvMat(i);
+    zinv = 2;
+%     yinv = yinvMat(i);
+    yinv = 0;
+%     xinv = xinvMat(i)
+    xinv = 2;
+%     Qinv = QinvMat(i);
+    Qinv = 90;
+    disp("INVERSE KINEMATICS")
+    eval(subs(gamma))
+    q1 = eval(subs(Theta1))
+    q2 = eval(subs(Theta2_a))
+    q3 = eval(subs(Theta3_a))
+    q4 = eval(subs(Theta4_a))
+    disp("Solution B")
+    eval(subs(gamma))
+    q1 = eval(subs(Theta1))
+    q2 = eval(subs(Theta2_b))
+    q3 = eval(subs(Theta3_b))
+    q4 = eval(subs(Theta4_b))
+
+% q1 = 360;    
+% q2 = 156.6306;
+% % q2 = 180;
+% q3 = -138.2766;
+% % q3 = -170;
+% q4 = 1;
+% % q4 = 120;
+
+q1 = 0;    
+q2 = 0;
+% q2 = 180;
+q3 = -90;
+% q3 = -170;
+q4 = 180;
+% q4 = 120;
+q5 = 0;
 
 xsolution = eval(subs(xt))
 ysolution = eval(subs(yt))
