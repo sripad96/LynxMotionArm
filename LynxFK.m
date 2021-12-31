@@ -59,73 +59,52 @@ xt = cosd(q1)*((l5*cosd(q2+q3+q4))+(l3*cosd(q2+q3))+(l2*cosd(q2)))
 yt = sind(q1)*((l5*cosd(q2+q3+q4))+(l3*cosd(q2+q3))+(l2*cosd(q2)))
 zt = (l5*sind(q2+q3+q4))+(l3*sind(q2+q3))+(l2*sind(q2))+l1
 
-% xt =cos(q1)*cos(q2)*l2 - l5*(cos((180*conj(q4))/pi)*(cos((180*conj(q1))/pi)*cos((180*conj(q2))/pi)*sin((180*conj(q3))/pi) + cos((180*conj(q1))/pi)*cos((180*conj(q3))/pi)*sin((180*conj(q2))/pi)) + sin((180*conj(q4))/pi)*(cos((180*conj(q1))/pi)*cos((180*conj(q2))/pi)*cos((180*conj(q3))/pi) - cos((180*conj(q1))/pi)*sin((180*conj(q2))/pi)*sin((180*conj(q3))/pi))) + cos((180*conj(q1))/pi)*cos((180*conj(q2))/pi)*cos((180*conj(q3))/pi)*conj(l3) - cos((180*conj(q1))/pi)*sin((180*conj(q2))/pi)*sin((180*conj(q3))/pi)*conj(l3)
-
 %% Plot the workspace of the robot
-% stepq1 = 30; 
-% step = 30;
-% points = 180/stepq1;
-% figure (2)
-% set(2,'position',[1243 190 560 420])
-% 
-% xwork = zeros(points^2) ; % reserving space for the variables, because
-% ywork = zeros(points^2) ; % otherwise they would be created later within a loop.
-% zwork = zeros(points^2) ;
-% QVale = zeros(points^2);
-% q5 = 0;
-% i = 1;
-% for q1 = -90 :stepq1:90	% for q1
-%     for q2 = 0:step:135   % for q2
-%         for q3 = -145:step:0 % for q3
-%             for q4 = -90:step:90 % for q4
-%                     xwork(i) =  eval(subs(xt));
-%                     ywork(i) =  eval(subs(yt));
-%                     zwork(i) =  eval(subs(zt));
-%                     QVale(i) =  q2 + q3 + q4;
-% %                     if(zwork(i) < 1.74 & zwork(i) > 1.73)
-% %                           xwork(i)
-% %                           ywork(i)
-% %                           zwork(i)
-% %                           QVale(i)
-% %                           q1
-% %                           q2
-% %                           q3
-% %                           q4
-% %                     end
-%                     i = i+1;
-%             end
-%         end
-%    end
-% end
-%                           xwork
-%                           ywork
-%                           zwork
-%                           QVale
-% plot3(xwork, ywork, zwork, 'rx')
-% hold on
-% title('Workspace') ; xlabel('x (m)') ; ylabel('y (m)') ; zlabel('z (m)') ;
-% axis equal
+stepq1 = 30; 
+step = 30;
+points = 180/stepq1;
+figure (2)
+set(2,'position',[1243 190 560 420])
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Inverse Kinematics Section
-
-q1 = 0;    
-q2 = 0;
-% q2 = 180;
-q3 = 90;
-% q3 = -170;
-q4 = -150;
-% q4 = 120;
+xwork = zeros(points^2) ; % reserving space for the variables, because
+ywork = zeros(points^2) ; % otherwise they would be created later within a loop.
+zwork = zeros(points^2) ;
+QVale = zeros(points^2);
 q5 = 0;
-
-xsolution = eval(subs(xt))
-ysolution = eval(subs(yt))
-zsolution = eval(subs(zt))
-
-
-   
-%%Plot the robotic arm, in at least different positions
+i = 1;
+for q1 = -90 :stepq1:90	% for q1
+    for q2 = 0:step:135   % for q2
+        for q3 = -145:step:0 % for q3
+            for q4 = -90:step:90 % for q4
+                    xwork(i) =  eval(subs(xt));
+                    ywork(i) =  eval(subs(yt));
+                    zwork(i) =  eval(subs(zt));
+                    QVale(i) =  q2 + q3 + q4;
+%                     if(zwork(i) < 1.74 & zwork(i) > 1.73)
+%                           xwork(i)
+%                           ywork(i)
+%                           zwork(i)
+%                           QVale(i)
+%                           q1
+%                           q2
+%                           q3
+%                           q4
+%                     end
+                    i = i+1;
+            end
+        end
+   end
+end
+xwork
+ywork
+zwork
+QVale
+plot3(xwork, ywork, zwork, 'rx')
+hold on
+title('Workspace') ; xlabel('x (m)') ; ylabel('y (m)') ; zlabel('z (m)') ;
+axis equal
+  
+%% Plot the robotic arm, in at least different positions
  %%SOLVING FOR JOINT COORDINATES
 figure (3) 
 Task_old = [1.04168 -1.80423  0.090961  5;
@@ -157,8 +136,6 @@ for i = 1:5
     pause(1.5)
 end
 
-
-% text(pt(4,1),pt(4,2),'x'); 
 %% DISPLAY IK PLOT
 figure(4)
 disp("Display Inverse Kinematics Plot")
@@ -169,24 +146,19 @@ J_Cor = Joint_Coordinates(Task(2, 1), Task(2, 2), Task(2, 3), Task(2, 4), l1, l2
     plot3(xx, yy, zz, 'ko-','Linewidth', 4)
     hold on
     xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
-%     T = num2str(xx(1,1), 5) + ", " + num2str(yy(1,1), 5) + ", " + num2str(zz(1,1), 5);
     T = num2str(J_Cor(4, 1), 3)
     text(xx(1,1) + 0.1, yy(1,1) + 0.1, zz(1,1) + 0.1, T);
     
     T = num2str(J_Cor(4, 2), 3);
-%     T = num2str(xx(2,1), 5) + ", " + num2str(yy(2,1), 5) + ", " + num2str(zz(2,1), 5);
     text(xx(2,1) + 0.1, yy(2,1) + 0.02, zz(2,1) + 0.1, T);
 
     T = num2str(J_Cor(4, 3), 3);
-%     T = num2str(xx(3,1), 5) + ", " + num2str(yy(3,1), 5) + ", " + num2str(zz(3,1), 5);
     text(xx(3,1) + 0.1, yy(3,1) + 0.1, zz(3,1) + 0.1, T);
 
     T = num2str(J_Cor(4, 4), 3);
-%     T = num2str(xx(4,1), 5) + ", " + num2str(yy(4,1), 5) + ", " + num2str(zz(4,1), 5);
     text(xx(4,1) + 0.1, yy(4,1) + 0.1, zz(4,1) + 0.1, T);
 
     T = "0";
-%     T = num2str(xx(5,1), 5) + ", " + num2str(yy(5,1), 5) + ", " + num2str(zz(5,1), 5);
     text(xx(5,1) + 0.1, yy(5,1) + 0.1, zz(5,1) + 0.1, T);
     axis([-2.5 2.5 -2.5 2.5]);
 
@@ -223,10 +195,6 @@ J_Cor = Joint_Coordinates(Task(2, 1), Task(2, 2), Task(2, 3), Task(2, 4), l1, l2
     angle_incQ2 = (angles(3, 2) - angles(2, 2))/steps_to_take;
     angle_incQ3 = (angles(3, 3) - angles(2, 3))/steps_to_take;
     angle_incQ4 = (angles(3, 4) - angles(2, 4))/steps_to_take;
-%     q1 = angles(2, 1);
-%     q2 = angles(2, 2);
-%     q3 = angles(2, 3);
-%     q4 = angles(2, 4);
     
     for i = 1:(steps_to_take + 1)
         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l4);
@@ -249,10 +217,6 @@ J_Cor = Joint_Coordinates(Task(2, 1), Task(2, 2), Task(2, 3), Task(2, 4), l1, l2
     angle_incQ2 = (angles(4, 2) - angles(3, 2))/steps_to_take;
     angle_incQ3 = (angles(4, 3) - angles(3, 3))/steps_to_take;
     angle_incQ4 = (angles(4, 4) - angles(3, 4))/steps_to_take;
-%     q1 = angles(3, 1);
-%     q2 = angles(3, 2);
-%     q3 = angles(3, 3);
-%     q4 = angles(3, 4);
     
     for i = 1:(steps_to_take+1)
         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l4);
@@ -275,10 +239,6 @@ J_Cor = Joint_Coordinates(Task(2, 1), Task(2, 2), Task(2, 3), Task(2, 4), l1, l2
     angle_incQ2 = (angles(5, 2) - angles(4, 2))/steps_to_take;
     angle_incQ3 = (angles(5, 3) - angles(4, 3))/steps_to_take;
     angle_incQ4 = (angles(5, 4) - angles(4, 4))/steps_to_take;
-%     q1 = angles(4, 1);
-%     q2 = angles(4, 2);
-%     q3 = angles(4, 3);
-%     q4 = angles(4, 4);
     
     for i = 1:(steps_to_take+1)
         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l4);
