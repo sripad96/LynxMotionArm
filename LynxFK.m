@@ -170,145 +170,167 @@ J_Cor = Joint_Coordinates(Task(2, 1), Task(2, 2), Task(2, 3), Task(2, 4), l1, l2
     axis([-2.5 2.5 -2.5 2.5]);
 
     %% IMPLEMENT FREE MOTION TRAJECTORY
-    figure(5)
-    disp("Display Free Joint space Plot")
-    graph_angles = zeros(5, 44);
-    steps_to_take = 10;
-    angle_incQ1 = (angles(2, 1) - angles(1, 1))/steps_to_take;
-    angle_incQ2 = (angles(2, 2) - angles(1, 2))/steps_to_take;
-    angle_incQ3 = (angles(2, 3) - angles(1, 3))/steps_to_take;
-    angle_incQ4 = (angles(2, 4) - angles(1, 4))/steps_to_take;
-    q1 = angles(1, 1);
-    q2 = angles(1, 2);
-    q3 = angles(1, 3);
-    q4 = angles(1, 4);
-    t = 1.5;
-    graph_angles
-    k = 1;
-    for i = 1:(steps_to_take)
-        J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
-        graph_angles(1,k) = q1;
-        graph_angles(2,k) = q2;
-        graph_angles(3,k) = q3;
-        graph_angles(4,k) = q4;
-        graph_angles(5,k) = t;
-        xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
-        yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
-        zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
-        q1 = q1 + angle_incQ1;
-        q2 = q2 + angle_incQ2;
-        q3 = q3 + angle_incQ3;
-        q4 = q4 + angle_incQ4;
-        t = t + 1.5;
-        k = k + 1;
-        plot3(xx, yy, zz, 'o-','Linewidth', 1)
-        axis([-3 3 -3 3]);
-        axis equal
-        hold on
-        pause(1.5)
-        
-        xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
-    end
-
-    steps_to_take = 10;
-    angle_incQ1 = (angles(3, 1) - angles(2, 1))/steps_to_take;
-    angle_incQ2 = (angles(3, 2) - angles(2, 2))/steps_to_take;
-    angle_incQ3 = (angles(3, 3) - angles(2, 3))/steps_to_take;
-    angle_incQ4 = (angles(3, 4) - angles(2, 4))/steps_to_take;
-    q1 = angles(2, 1);
-    q2 = angles(2, 2);
-    q3 = angles(2, 3);
-    q4 = angles(2, 4);
-    graph_angles
-    for i = 1:(steps_to_take)
-        J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
-        graph_angles(1,k) = q1;
-        graph_angles(2,k) = q2;
-        graph_angles(3,k) = q3;
-        graph_angles(4,k) = q4;
-        graph_angles(5,k) = t;
-        xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
-        yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
-        zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
-        q1 = q1 + angle_incQ1;
-        q2 = q2 + angle_incQ2;
-        q3 = q3 + angle_incQ3;
-        q4 = q4 + angle_incQ4;
-        t = t + 1.5;
-        k = k + 1;
-        plot3(xx, yy, zz, 'o-','Linewidth', 1)
-        axis([-2.5 2.5 -2.5 2.5]);
-        axis equal
-        hold on
-        pause(1.5)
-        xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
-    end
-
-     steps_to_take = 10;
-    angle_incQ1 = (angles(4, 1) - angles(3, 1))/steps_to_take;
-    angle_incQ2 = (angles(4, 2) - angles(3, 2))/steps_to_take;
-    angle_incQ3 = (angles(4, 3) - angles(3, 3))/steps_to_take;
-    angle_incQ4 = (angles(4, 4) - angles(3, 4))/steps_to_take;
-    q1 = angles(3, 1);
-    q2 = angles(3, 2);
-    q3 = angles(3, 3);
-    q4 = angles(3, 4);
-    graph_angles
-    for i = 1:(steps_to_take)
-        J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
-        graph_angles(1,k) = q1;
-        graph_angles(2,k) = q2;
-        graph_angles(3,k) = q3;
-        graph_angles(4,k) = q4;
-        graph_angles(5,k) = t;
-        xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
-        yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
-        zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
-        q1 = q1 + angle_incQ1;
-        q2 = q2 + angle_incQ2;
-        q3 = q3 + angle_incQ3;
-        q4 = q4 + angle_incQ4;
-        t = t + 1.5;
-        k = k + 1;
-        plot3(xx, yy, zz, 'o-','Linewidth', 1)
-        axis([-2.5 2.5 -2.5 2.5]);
-        axis equal
-        hold on
-        pause(1.5)
-        xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
-    end
-
-    steps_to_take = 10;
-    angle_incQ1 = (angles(5, 1) - angles(4, 1))/steps_to_take;
-    angle_incQ2 = (angles(5, 2) - angles(4, 2))/steps_to_take;
-    angle_incQ3 = (angles(5, 3) - angles(4, 3))/steps_to_take;
-    angle_incQ4 = (angles(5, 4) - angles(4, 4))/steps_to_take;
-    q1 = angles(4, 1);
-    q2 = angles(4, 2);
-    q3 = angles(4, 3);
-    q4 = angles(4, 4);
-    graph_angles
-    for i = 1:(steps_to_take)
-        J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
-        graph_angles(1,k) = q1;
-        graph_angles(2,k) = q2;
-        graph_angles(3,k) = q3;
-        graph_angles(4,k) = q4;
-        graph_angles(5,k) = t;
-        xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
-        yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
-        zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
-        q1 = q1 + angle_incQ1;
-        q2 = q2 + angle_incQ2;
-        q3 = q3 + angle_incQ3;
-        q4 = q4 + angle_incQ4;
-        t = t + 1.5;
-        k = k + 1;
-        plot3(xx, yy, zz, 'o-','Linewidth', 1)
-        axis equal
-        hold on
-        pause(1.5)
-        xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
-    end
-    graph_angles
+%     figure(5)
+%     disp("Display Free Joint space Plot")
+%     graph_angles = zeros(5, 44);
+%     steps_to_take = 10;
+%     angle_incQ1 = (angles(2, 1) - angles(1, 1))/steps_to_take;
+%     angle_incQ2 = (angles(2, 2) - angles(1, 2))/steps_to_take;
+%     angle_incQ3 = (angles(2, 3) - angles(1, 3))/steps_to_take;
+%     angle_incQ4 = (angles(2, 4) - angles(1, 4))/steps_to_take;
+%     q1 = angles(1, 1);
+%     q2 = angles(1, 2);
+%     q3 = angles(1, 3);
+%     q4 = angles(1, 4);
+%     t = 1.5;
+%     k = 1;
+%     for i = 1:(steps_to_take)
+%         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
+%         graph_angles(1,k) = q1;  graph_angles(2,k) = q2; graph_angles(3,k) = q3; graph_angles(4,k) = q4; graph_angles(5,k) = t;
+%         xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
+%         yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
+%         zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
+%         q1 = q1 + angle_incQ1;
+%         q2 = q2 + angle_incQ2;
+%         q3 = q3 + angle_incQ3;
+%         q4 = q4 + angle_incQ4;
+%         t = t + 1.5;
+%         k = k + 1;
+%         plot3(xx, yy, zz, 'o-','Linewidth', 1)
+%         axis([-3 3 -3 3]);
+%         axis equal
+%         hold on
+%         pause(1.5)
+%         
+%         xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
+%     end
+% 
+%     steps_to_take = 10;
+%     angle_incQ1 = (angles(3, 1) - angles(2, 1))/steps_to_take;
+%     angle_incQ2 = (angles(3, 2) - angles(2, 2))/steps_to_take;
+%     angle_incQ3 = (angles(3, 3) - angles(2, 3))/steps_to_take;
+%     angle_incQ4 = (angles(3, 4) - angles(2, 4))/steps_to_take;
+%     q1 = angles(2, 1);
+%     q2 = angles(2, 2);
+%     q3 = angles(2, 3);
+%     q4 = angles(2, 4);
+% 
+%     for i = 1:(steps_to_take)
+%         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
+%         graph_angles(1,k) = q1; graph_angles(2,k) = q2; graph_angles(3,k) = q3; graph_angles(4,k) = q4; graph_angles(5,k) = t;
+%         xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
+%         yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
+%         zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
+%         q1 = q1 + angle_incQ1;
+%         q2 = q2 + angle_incQ2;
+%         q3 = q3 + angle_incQ3;
+%         q4 = q4 + angle_incQ4;
+%         t = t + 1.5;
+%         k = k + 1;
+%         plot3(xx, yy, zz, 'o-','Linewidth', 1)
+%         axis([-2.5 2.5 -2.5 2.5]);
+%         axis equal
+%         hold on
+%         pause(1.5)
+%         xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
+%     end
+% 
+%     steps_to_take = 10;
+%     angle_incQ1 = (angles(4, 1) - angles(3, 1))/steps_to_take;
+%     angle_incQ2 = (angles(4, 2) - angles(3, 2))/steps_to_take;
+%     angle_incQ3 = (angles(4, 3) - angles(3, 3))/steps_to_take;
+%     angle_incQ4 = (angles(4, 4) - angles(3, 4))/steps_to_take;
+%     q1 = angles(3, 1);
+%     q2 = angles(3, 2);
+%     q3 = angles(3, 3);
+%     q4 = angles(3, 4);
+%     for i = 1:(steps_to_take)
+%         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
+%         graph_angles(1,k) = q1; graph_angles(2,k) = q2; graph_angles(3,k) = q3; graph_angles(4,k) = q4; graph_angles(5,k) = t;
+%         xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
+%         yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
+%         zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
+%         q1 = q1 + angle_incQ1;
+%         q2 = q2 + angle_incQ2;
+%         q3 = q3 + angle_incQ3;
+%         q4 = q4 + angle_incQ4;
+%         t = t + 1.5;
+%         k = k + 1;
+%         plot3(xx, yy, zz, 'o-','Linewidth', 1)
+%         axis([-2.5 2.5 -2.5 2.5]);
+%         axis equal
+%         hold on
+%         pause(1.5)
+%         xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
+%     end
+% 
+%     steps_to_take = 10;
+%     angle_incQ1 = (angles(5, 1) - angles(4, 1))/steps_to_take;
+%     angle_incQ2 = (angles(5, 2) - angles(4, 2))/steps_to_take;
+%     angle_incQ3 = (angles(5, 3) - angles(4, 3))/steps_to_take;
+%     angle_incQ4 = (angles(5, 4) - angles(4, 4))/steps_to_take;
+%     q1 = angles(4, 1);
+%     q2 = angles(4, 2);
+%     q3 = angles(4, 3);
+%     q4 = angles(4, 4);
+% 
+%     for i = 1:(steps_to_take)
+%         J_CorFK = Joint_CoordinatesFK(q1, q2, q3, q4, l1, l2, l3, l5);
+%         graph_angles(1,k) = q1; graph_angles(2,k) = q2; graph_angles(3,k) = q3; graph_angles(4,k) = q4; graph_angles(5,k) = t;
+%         xx = [ J_CorFK(1, 1); J_CorFK(1, 2); J_CorFK(1, 3); J_CorFK(1, 4); J_CorFK(1, 5)];
+%         yy = [ J_CorFK(2, 1); J_CorFK(2, 2); J_CorFK(2, 3); J_CorFK(2, 4); J_CorFK(2, 5)];
+%         zz = [ J_CorFK(3, 1); J_CorFK(3, 2); J_CorFK(3, 3); J_CorFK(3, 4); J_CorFK(3, 5)];
+%         q1 = q1 + angle_incQ1;
+%         q2 = q2 + angle_incQ2;
+%         q3 = q3 + angle_incQ3;
+%         q4 = q4 + angle_incQ4;
+%         t = t + 1.5;
+%         k = k + 1;
+%         plot3(xx, yy, zz, 'o-','Linewidth', 1)
+%         axis equal
+%         hold on
+%         pause(1.5)
+%         xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
+%     end
+%     graph_angles
     %% IMPLEMENT STRAIGHT LINE TRAJECTORY
+figure(6)
+Straight_Line1 = [0 -1.97988 0.624255 -25;
+                 0 -1.982382 0.934266  35;
+                 0 -1.984885 1.244277  25;
+                 0 -1.987365 1.554288  25;
+                 0 -1.989890 1.864399  35;
+
+                 0   -1.99239   2.17431   5;
+                 0.5 -1.593912  2.17431   5;
+                 1   -1.195435  2.17431   10;
+                 1.5 -0.7973466 2.17431   20;
+                 2   -0.398478  2.17431   25;
+                 
+                 2.5  0         2.17431  5;
+                 2.0  0.398478  2.17431  5;
+                 1.5  0.7969956 2.17431  10;
+                 1.0  1.195434  2.17431  20;
+                 0.5  1.593912  2.17431  25;
+
+                 0    1.99239  2.17431    25;
+                 0    1.989889 1.864299   35;
+                 0    1.987387 1.554288   25;
+                 0    1.984885 1.244277   25;
+                 0    1.982382 0.934266   35;
+                 0    1.979880 0.624255   25];
+
+for i = 1:21
+    J_Cor = Joint_Coordinates(Straight_Line1(i, 1), Straight_Line1(i, 2), Straight_Line1(i, 3), Straight_Line1(i, 4), l1, l2, l3, l5);
+    xx = [ J_Cor(1, 1); J_Cor(1, 2); J_Cor(1, 3); J_Cor(1, 4); J_Cor(1, 5)]; 
+    yy = [ J_Cor(2, 1); J_Cor(2, 2); J_Cor(2, 3); J_Cor(2, 4); J_Cor(2, 5)];
+    zz = [ J_Cor(3, 1); J_Cor(3, 2); J_Cor(3, 3); J_Cor(3, 4); J_Cor(3, 5)];
+    angles(i, 1) = J_Cor(4, 1); angles(i, 2) = J_Cor(4, 2); angles(i, 3) = J_Cor(4, 3); angles(i, 4) = J_Cor(4, 4);
+    plot3(xx, yy, zz, 'ko-','Linewidth', 1)
+    axis equal
+    hold on
+    xlabel('x (units)') ; ylabel('y (units)'); zlabel('z (units)');
+
+    axis([-2.5 2.5 -2.5 2.5]);
+    pause(1.5)
+end
